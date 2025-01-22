@@ -33,7 +33,7 @@ func main() {
 
 	// Start Fiber server in a goroutine
 	go func() {
-		if err := httpServer.RunServer(3000); err != nil {
+		if err := httpServer.RunServer(appCtx.Config.Port); err != nil {
 			errChan <- fmt.Errorf("failed to start Fiber server: %w", err)
 		}
 	}()

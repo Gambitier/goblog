@@ -1,16 +1,20 @@
 package context
 
-import "github.com/gambitier/goblog/services"
+import (
+	"github.com/gambitier/goblog/services"
+	"github.com/gambitier/goblog/startup/config"
+)
 
 type AppContext struct {
 	Services *services.Service
+	Config   *config.Config
 }
 
 func NewAppContext() (*AppContext, error) {
-	// db, err := database.NewDatabaseRepository()
-	// if err != nil {
-	// 	return nil, err
-	// }
+	cfg, err := config.NewConfig()
+	if err != nil {
+		return nil, err
+	}
 
 	service, err := services.NewService()
 	if err != nil {
@@ -19,6 +23,6 @@ func NewAppContext() (*AppContext, error) {
 
 	return &AppContext{
 		Services: service,
-		// DatabaseRepo: db,
+		Config:   cfg,
 	}, nil
 }
