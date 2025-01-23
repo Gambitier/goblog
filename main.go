@@ -16,7 +16,7 @@ import (
 // @title Go Blog API
 // @version 1.0
 // @description This is a server for Go Blog API.
-// @host localhost:3000
+// @host
 // @BasePath /
 func main() {
 	appCtx, err := context.NewAppContext()
@@ -33,7 +33,7 @@ func main() {
 
 	// Start Fiber server in a goroutine
 	go func() {
-		if err := httpServer.RunServer(appCtx.Config.Port); err != nil {
+		if err := httpServer.RunServer(); err != nil {
 			errChan <- fmt.Errorf("failed to start Fiber server: %w", err)
 		}
 	}()

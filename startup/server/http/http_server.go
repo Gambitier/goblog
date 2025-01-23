@@ -63,10 +63,13 @@ func (server *HttpServer) Configure() {
 	server.app.Use(middleware.ErrorHandler())
 }
 
-func (server *HttpServer) RunServer(port int) error {
-	address := fmt.Sprintf(":%v", port)
-
-	log.Printf("Starting server on %s\n", address)
+func (server *HttpServer) RunServer() error {
+	address := fmt.Sprintf(":%v", server.appContext.Config.Port)
+	log.Printf(
+		"Starting server on PORT: %v & Host: %s\n",
+		server.appContext.Config.Port,
+		server.appContext.Config.APIHost,
+	)
 
 	if err := server.app.Listen(address); err != nil {
 		return err

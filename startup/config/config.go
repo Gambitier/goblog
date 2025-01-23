@@ -9,6 +9,7 @@ import (
 type Config struct {
 	Port        int    `mapstructure:"port"`
 	DatabaseURL string `mapstructure:"database_url"`
+	APIHost     string `mapstructure:"api_host"`
 }
 
 func NewConfig() (*Config, error) {
@@ -17,6 +18,7 @@ func NewConfig() (*Config, error) {
 		return &Config{
 			Port:        3000,
 			DatabaseURL: dbURL,
+			APIHost:     os.Getenv("API_HOST"),
 		}, nil
 	}
 
