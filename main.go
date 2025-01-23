@@ -46,11 +46,14 @@ func main() {
 	case err := <-errChan:
 		log.Fatalf("server error: %v", err)
 	case <-quit:
-		log.Println("shutting down servers...")
-
 		// Gracefully shut down the Fiber server
 		if err := httpServer.Shutdown(); err != nil {
 			log.Fatalf("Fiber server shutdown error: %v", err)
+		}
+
+		// close database connection
+		if err := appCtx.DB.Close(); err != nil {
+			log.Fatalf("failed to close database connection: %v", err)
 		}
 
 		log.Println("servers shut down gracefully")

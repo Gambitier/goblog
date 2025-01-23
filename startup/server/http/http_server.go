@@ -79,6 +79,7 @@ func (server *HttpServer) RunServer() error {
 }
 
 func (server *HttpServer) Shutdown() error {
+	log.Println("shutting down http server...")
 	return server.app.Shutdown()
 }
 

@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	"log"
 
 	sqlcDb "github.com/gambitier/goblog/database/sqlc"
 	_ "github.com/lib/pq"
@@ -30,5 +31,6 @@ func NewDatabase(databaseURL string) (*Database, error) {
 }
 
 func (d *Database) Close() error {
+	log.Println("closing database connection...")
 	return d.db.Close()
 }
