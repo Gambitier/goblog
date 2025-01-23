@@ -2,6 +2,7 @@ services:
   - type: web
     name: goblog
     runtime: go
+    plan: free
     buildCommand: go build -o main
     startCommand: ./main
     envVars:
