@@ -29,15 +29,16 @@ services:
           name: goblog-db
           property: database
       - key: CONFIG_JSON
-        value: |
+        sync: false
+        value: >-
           {
             "port": 3000,
             "database": {
-              "host": "${DB_HOST}",
-              "port": ${DB_PORT},
-              "user": "${DB_USER}",
-              "password": "${DB_PASSWORD}",
-              "dbname": "${DB_NAME}",
+              "host": "$DB_HOST",
+              "port": "$DB_PORT",
+              "user": "$DB_USER",
+              "password": "$DB_PASSWORD",
+              "dbname": "$DB_NAME",
               "sslmode": "require"
             }
           }
