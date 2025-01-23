@@ -18,7 +18,7 @@ services:
       - key: DB_USER
         fromDatabase:
           name: goblog-db
-          property: username
+          property: user
       - key: DB_PASSWORD
         fromDatabase:
           name: goblog-db
