@@ -1,8 +1,13 @@
 package blogservice
 
+import (
+	"github.com/gambitier/goblog/database"
+)
+
 type BlogService struct {
+	db *database.Database
 }
 
-func NewBlogService() *BlogService {
-	return &BlogService{}
+func NewBlogService(db *database.Database) *BlogService {
+	return &BlogService{db: db}
 }

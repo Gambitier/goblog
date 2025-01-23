@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"github.com/gambitier/goblog/services"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -12,6 +13,16 @@ type Blog struct {
 	UpdatedAt string `json:"updated_at"`
 }
 
+type BlogHandler struct {
+	services *services.Service
+}
+
+func NewBlogHandler(services *services.Service) *BlogHandler {
+	return &BlogHandler{
+		services: services,
+	}
+}
+
 // @Summary Get blogs
 // @Description Get all blogs
 // @Tags blogs
@@ -19,10 +30,23 @@ type Blog struct {
 // @Produce json
 // @Success 200 {array} Blog
 // @Router /blogs [get]
-func GetBlogs(c *fiber.Ctx) error {
-	blogs := []Blog{
-		{ID: "1", Title: "Blog 1", Content: "Content 1", CreatedAt: "2021-01-01", UpdatedAt: "2021-01-01"},
-		{ID: "2", Title: "Blog 2", Content: "Content 2", CreatedAt: "2021-01-02", UpdatedAt: "2021-01-02"},
-	}
-	return c.JSON(blogs)
+func (h *BlogHandler) GetBlogs(c *fiber.Ctx) error {
+	// Use h.services.BlogService to interact with the database
+	return c.JSON(nil)
+}
+
+func (h *BlogHandler) CreateBlog(c *fiber.Ctx) error {
+	return c.JSON(nil)
+}
+
+func (h *BlogHandler) GetBlog(c *fiber.Ctx) error {
+	return c.JSON(nil)
+}
+
+func (h *BlogHandler) UpdateBlog(c *fiber.Ctx) error {
+	return c.JSON(nil)
+}
+
+func (h *BlogHandler) DeleteBlog(c *fiber.Ctx) error {
+	return c.JSON(nil)
 }

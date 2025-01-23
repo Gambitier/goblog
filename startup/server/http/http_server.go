@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/gambitier/goblog/api"
 	"github.com/gambitier/goblog/startup/context"
 	"github.com/gofiber/contrib/swagger"
 	"github.com/gofiber/fiber/v2"
@@ -76,5 +77,5 @@ func (server *HttpServer) Shutdown() error {
 }
 
 func (server *HttpServer) RegisterRoutes() {
-	registerRoutes(server.app)
+	api.SetupRoutes(server.app, server.appContext)
 }

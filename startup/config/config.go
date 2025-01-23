@@ -5,7 +5,17 @@ import (
 )
 
 type Config struct {
-	Port int `mapstructure:"port"`
+	Port int      `mapstructure:"port"`
+	DB   DBConfig `mapstructure:"database"`
+}
+
+type DBConfig struct {
+	Host     string `mapstructure:"host"`
+	Port     int    `mapstructure:"port"`
+	User     string `mapstructure:"user"`
+	Password string `mapstructure:"password"`
+	DBName   string `mapstructure:"dbname"`
+	SSLMode  string `mapstructure:"sslmode"`
 }
 
 func NewConfig() (*Config, error) {
