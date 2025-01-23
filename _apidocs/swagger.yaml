@@ -42,6 +42,15 @@ definitions:
       total_pages:
         type: integer
     type: object
+  dto.UpdateBlogRequest:
+    properties:
+      body:
+        type: string
+      description:
+        type: string
+      title:
+        type: string
+    type: object
 host: localhost:3000
 info:
   contact: {}
@@ -94,6 +103,125 @@ paths:
           schema:
             $ref: '#/definitions/dto.BlogResponse'
       summary: Create a blog
+      tags:
+      - blogs
+  /api/blogs/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a blog post by its ID
+      parameters:
+      - description: Blog ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete a blog
+      tags:
+      - blogs
+    get:
+      consumes:
+      - application/json
+      description: Get a blog post by its ID
+      parameters:
+      - description: Blog ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.BlogResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get a single blog
+      tags:
+      - blogs
+    patch:
+      consumes:
+      - application/json
+      description: Update a blog post by its ID
+      parameters:
+      - description: Blog ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Blog update object
+        in: body
+        name: blog
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateBlogRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.BlogResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update a blog
       tags:
       - blogs
 swagger: "2.0"

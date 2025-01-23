@@ -15,7 +15,8 @@ LIMIT $1 OFFSET $2;
 UPDATE blog_posts
 SET title = $2,
     description = $3,
-    body = $4
+    body = $4,
+    updated_at = CURRENT_TIMESTAMP
 WHERE id = $1
 RETURNING *;
 -- name: DeleteBlogPost :exec

@@ -124,7 +124,8 @@ const updateBlogPost = `-- name: UpdateBlogPost :one
 UPDATE blog_posts
 SET title = $2,
     description = $3,
-    body = $4
+    body = $4,
+    updated_at = CURRENT_TIMESTAMP
 WHERE id = $1
 RETURNING id, title, description, body, created_at, updated_at
 `
