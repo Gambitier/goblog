@@ -3,6 +3,7 @@ package config
 import (
 	"encoding/json"
 	"os"
+	"strconv"
 
 	"github.com/spf13/viper"
 )
@@ -22,11 +23,26 @@ type DBConfig struct {
 }
 
 func NewConfig() (*Config, error) {
-	// First try to load from CONFIG_JSON environment variable
-	if configJSON := os.Getenv("CONFIG_JSON"); configJSON != "" {
+	// Try to load from environment variables first
+	if os.Getenv("DB_HOST") != "" {
+		dbPort, _ := strconv.Atoi(os.Getenv("DB_PORT"))
+		appPort, _ := strconv.Atoi(os.Getenv("PORT"))
+		configJSON := map[string]interface{}{
+			"port": appPort,
+			"database": map[string]interface{}{
+				"host":     os.Getenv("DB_HOST"),
+				"port":     dbPort,
+				"user":     os.Getenv("DB_USER"),
+				"password": os.Getenv("DB_PASSWORD"),
+				"dbname":   os.Getenv("DB_NAME"),
+				"sslmode":  "require",
+			},
+		}
+
+		// Convert to JSON and use existing unmarshal logic
+		jsonBytes, _ := json.Marshal(configJSON)
 		var cfg Config
-		err := json.Unmarshal([]byte(configJSON), &cfg)
-		if err != nil {
+		if err := json.Unmarshal(jsonBytes, &cfg); err != nil {
 			return nil, err
 		}
 		return &cfg, nil
