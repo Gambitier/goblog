@@ -10,6 +10,18 @@ import (
 	"database/sql"
 )
 
+const countBlogPosts = `-- name: CountBlogPosts :one
+SELECT COUNT(*)
+FROM blog_posts
+`
+
+func (q *Queries) CountBlogPosts(ctx context.Context) (int64, error) {
+	row := q.db.QueryRowContext(ctx, countBlogPosts)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
 const createBlogPost = `-- name: CreateBlogPost :one
 INSERT INTO blog_posts (title, description, body)
 VALUES ($1, $2, $3)
@@ -70,10 +82,16 @@ const listBlogPosts = `-- name: ListBlogPosts :many
 SELECT id, title, description, body, created_at, updated_at
 FROM blog_posts
 ORDER BY created_at DESC
+LIMIT $1 OFFSET $2
 `
 
-func (q *Queries) ListBlogPosts(ctx context.Context) ([]BlogPost, error) {
-	rows, err := q.db.QueryContext(ctx, listBlogPosts)
+type ListBlogPostsParams struct {
+	Limit  int32 `json:"limit"`
+	Offset int32 `json:"offset"`
+}
+
+func (q *Queries) ListBlogPosts(ctx context.Context, arg ListBlogPostsParams) ([]BlogPost, error) {
+	rows, err := q.db.QueryContext(ctx, listBlogPosts, arg.Limit, arg.Offset)
 	if err != nil {
 		return nil, err
 	}

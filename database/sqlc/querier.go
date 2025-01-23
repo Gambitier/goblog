@@ -9,10 +9,11 @@ import (
 )
 
 type Querier interface {
+	CountBlogPosts(ctx context.Context) (int64, error)
 	CreateBlogPost(ctx context.Context, arg CreateBlogPostParams) (BlogPost, error)
 	DeleteBlogPost(ctx context.Context, id int32) error
 	GetBlogPost(ctx context.Context, id int32) (BlogPost, error)
-	ListBlogPosts(ctx context.Context) ([]BlogPost, error)
+	ListBlogPosts(ctx context.Context, arg ListBlogPostsParams) ([]BlogPost, error)
 	UpdateBlogPost(ctx context.Context, arg UpdateBlogPostParams) (BlogPost, error)
 }
 

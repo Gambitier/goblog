@@ -1,4 +1,4 @@
-package blogservice
+package blog
 
 import (
 	"github.com/gambitier/goblog/database"

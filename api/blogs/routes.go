@@ -6,7 +6,7 @@ import (
 )
 
 func RegisterRoutes(router fiber.Router, ctx *context.AppContext) {
-	blogs := router.Group("/blog-post")
+	blogs := router.Group("/blogs")
 
 	blogs.Get("/", ctx.Handlers.BlogHandler.GetBlogs)
 	blogs.Post("/", ctx.Handlers.BlogHandler.CreateBlog)

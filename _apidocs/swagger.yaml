@@ -1,17 +1,46 @@
 basePath: /
 definitions:
-  handlers.Blog:
+  dto.BlogResponse:
     properties:
-      content:
+      body:
         type: string
       created_at:
         type: string
-      id:
+      description:
         type: string
+      id:
+        type: integer
       title:
         type: string
       updated_at:
         type: string
+    type: object
+  dto.CreateBlogRequest:
+    properties:
+      body:
+        type: string
+      description:
+        type: string
+      title:
+        type: string
+    required:
+    - body
+    - title
+    type: object
+  dto.PaginatedBlogResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.BlogResponse'
+        type: array
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total:
+        type: integer
+      total_pages:
+        type: integer
     type: object
 host: localhost:3000
 info:
@@ -20,21 +49,51 @@ info:
   title: Go Blog API
   version: "1.0"
 paths:
-  /blogs:
+  /api/blogs:
     get:
       consumes:
       - application/json
-      description: Get all blogs
+      description: Get all blogs with pagination
+      parameters:
+      - description: 'Page number (default: 1)'
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - description: 'Items per page (default: 10)'
+        in: query
+        minimum: 1
+        name: page_size
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/handlers.Blog'
-            type: array
+            $ref: '#/definitions/dto.PaginatedBlogResponse'
       summary: Get blogs
+      tags:
+      - blogs
+    post:
+      consumes:
+      - application/json
+      description: Create a new blog
+      parameters:
+      - description: Blog details
+        in: body
+        name: blog
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateBlogRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.BlogResponse'
+      summary: Create a blog
       tags:
       - blogs
 swagger: "2.0"

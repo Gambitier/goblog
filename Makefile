@@ -7,7 +7,7 @@ DB_SSL=$(shell jq -r '.database.sslmode' config.json)
 
 DB_URL=postgresql://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=$(DB_SSL)
 
-.PHONY: server migrate-up migrate-down sqlc
+.PHONY: server migrate-up migrate-down sqlc swagger
 
 server:
 	go run main.go
@@ -19,4 +19,7 @@ migrate-up:
 	migrate -path database/migrations -database "$(DB_URL)" up
 
 migrate-down:
-	migrate -path database/migrations -database "$(DB_URL)" down 
+	migrate -path database/migrations -database "$(DB_URL)" down
+
+swagger:
+	swag init -g main.go -o ./_apidocs 

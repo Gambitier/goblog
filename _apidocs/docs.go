@@ -15,9 +15,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/blogs": {
+        "/api/blogs": {
             "get": {
-                "description": "Get all blogs",
+                "description": "Get all blogs with pagination",
                 "consumes": [
                     "application/json"
                 ],
@@ -28,14 +28,59 @@ const docTemplate = `{
                     "blogs"
                 ],
                 "summary": "Get blogs",
+                "parameters": [
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "description": "Page number (default: 1)",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "description": "Items per page (default: 10)",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/handlers.Blog"
-                            }
+                            "$ref": "#/definitions/dto.PaginatedBlogResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new blog",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "blogs"
+                ],
+                "summary": "Create a blog",
+                "parameters": [
+                    {
+                        "description": "Blog details",
+                        "name": "blog",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CreateBlogRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.BlogResponse"
                         }
                     }
                 }
@@ -43,23 +88,67 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "handlers.Blog": {
+        "dto.BlogResponse": {
             "type": "object",
             "properties": {
-                "content": {
+                "body": {
                     "type": "string"
                 },
                 "created_at": {
                     "type": "string"
                 },
-                "id": {
+                "description": {
                     "type": "string"
+                },
+                "id": {
+                    "type": "integer"
                 },
                 "title": {
                     "type": "string"
                 },
                 "updated_at": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.CreateBlogRequest": {
+            "type": "object",
+            "required": [
+                "body",
+                "title"
+            ],
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.PaginatedBlogResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.BlogResponse"
+                    }
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "page_size": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                },
+                "total_pages": {
+                    "type": "integer"
                 }
             }
         }
