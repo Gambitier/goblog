@@ -1,0 +1,47 @@
+services:
+  - type: web
+    name: goblog
+    runtime: go
+    buildCommand: go build -o main
+    startCommand: ./main
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: DB_HOST
+        fromDatabase:
+          name: goblog-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: goblog-db
+          property: port
+      - key: DB_USER
+        fromDatabase:
+          name: goblog-db
+          property: username
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: goblog-db
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: goblog-db
+          property: database
+      - key: CONFIG_JSON
+        value: |
+          {
+            "port": 3000,
+            "database": {
+              "host": "${DB_HOST}",
+              "port": ${DB_PORT},
+              "user": "${DB_USER}",
+              "password": "${DB_PASSWORD}",
+              "dbname": "${DB_NAME}",
+              "sslmode": "require"
+            }
+          }
+
+databases:
+  - name: goblog-db
+    databaseName: goblog
+    plan: free
