@@ -22,7 +22,7 @@ func NewAppContext() (*AppContext, error) {
 		return nil, fmt.Errorf("failed to load config: %v", err)
 	}
 
-	db, err := database.NewDatabase(&cfg.DB)
+	db, err := database.NewDatabase(cfg.DatabaseURL)
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize database: %v", err)
 	}

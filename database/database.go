@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	sqlcDb "github.com/gambitier/goblog/database/sqlc"
-	"github.com/gambitier/goblog/startup/config"
 	_ "github.com/lib/pq"
 )
 
@@ -14,19 +13,14 @@ type Database struct {
 	db *sql.DB
 }
 
-func NewDatabase(cfg *config.DBConfig) (*Database, error) {
-	connStr := fmt.Sprintf(
-		"postgresql://%s:%s@%s:%d/%s?sslmode=%s",
-		cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.DBName, cfg.SSLMode,
-	)
-
-	db, err := sql.Open("postgres", connStr)
+func NewDatabase(databaseURL string) (*Database, error) {
+	db, err := sql.Open("postgres", databaseURL)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to open database: %v", err)
 	}
 
 	if err := db.Ping(); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to ping database: %v", err)
 	}
 
 	return &Database{
