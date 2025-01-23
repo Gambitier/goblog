@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/gambitier/goblog/api"
+	"github.com/gambitier/goblog/middleware"
 	"github.com/gambitier/goblog/startup/context"
 	"github.com/gofiber/contrib/swagger"
 	"github.com/gofiber/fiber/v2"
@@ -58,6 +59,8 @@ func (server *HttpServer) Configure() {
 		Path:     "swagger",
 		Title:    "Swagger API Docs",
 	}))
+
+	server.app.Use(middleware.ErrorHandler())
 }
 
 func (server *HttpServer) RunServer(port int) error {

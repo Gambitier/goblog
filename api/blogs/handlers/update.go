@@ -5,6 +5,7 @@ import (
 
 	"github.com/gambitier/goblog/api/blogs/dto"
 	"github.com/gambitier/goblog/domain/blog"
+	"github.com/gambitier/goblog/errors"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -24,16 +25,12 @@ import (
 func (h *BlogHandler) UpdateBlog(c *fiber.Ctx) error {
 	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid blog ID",
-		})
+		return errors.NewBadRequestError("invalid blog ID")
 	}
 
 	var req dto.UpdateBlogRequest
 	if err := c.BodyParser(&req); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid request body",
-		})
+		return errors.NewBadRequestError("invalid request body")
 	}
 
 	blog, err := h.services.BlogService.UpdateBlog(c.Context(), id, &blog.Blog{
@@ -42,15 +39,7 @@ func (h *BlogHandler) UpdateBlog(c *fiber.Ctx) error {
 		Body:        req.Body,
 	})
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": "Failed to update blog",
-		})
-	}
-
-	if blog == nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"error": "Blog not found",
-		})
+		return err
 	}
 
 	return c.JSON(dto.BlogResponse{

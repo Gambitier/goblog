@@ -1,5 +1,7 @@
 package blog
 
-import "errors"
+import "github.com/gambitier/goblog/errors"
 
-var ErrBlogNotFound = errors.New("blog not found")
+var (
+	ErrBlogNotFound = errors.NewNotFoundError("blog not found")
+)

@@ -3,6 +3,7 @@ package handlers
 import (
 	"github.com/gambitier/goblog/api/blogs/dto"
 	"github.com/gambitier/goblog/domain/blog"
+	"github.com/gambitier/goblog/errors"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -17,9 +18,7 @@ import (
 func (h *BlogHandler) CreateBlog(c *fiber.Ctx) error {
 	var req dto.CreateBlogRequest
 	if err := c.BodyParser(&req); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid request body",
-		})
+		return errors.NewBadRequestError("invalid request body")
 	}
 
 	blog := &blog.CreateBlogDomainModel{
@@ -30,9 +29,7 @@ func (h *BlogHandler) CreateBlog(c *fiber.Ctx) error {
 
 	result, err := h.services.BlogService.CreateBlog(c.Context(), blog)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": "Failed to create blog",
-		})
+		return err
 	}
 
 	return c.Status(fiber.StatusCreated).JSON(dto.BlogResponse{

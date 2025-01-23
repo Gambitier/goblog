@@ -28,9 +28,7 @@ func (h *BlogHandler) DeleteBlog(c *fiber.Ctx) error {
 
 	err = h.services.BlogService.DeleteBlog(c.Context(), id)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": "Failed to delete blog",
-		})
+		return err
 	}
 
 	return c.SendStatus(fiber.StatusNoContent)

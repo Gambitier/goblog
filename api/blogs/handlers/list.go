@@ -36,9 +36,7 @@ func (h *BlogHandler) GetBlogs(c *fiber.Ctx) error {
 		PageSize: query.PageSize,
 	})
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": "Failed to fetch blogs",
-		})
+		return err
 	}
 
 	// Convert domain models to response DTOs

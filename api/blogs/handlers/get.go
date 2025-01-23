@@ -29,15 +29,7 @@ func (h *BlogHandler) GetBlog(c *fiber.Ctx) error {
 
 	blog, err := h.services.BlogService.GetBlog(c.Context(), int32(id))
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": "Failed to fetch blog",
-		})
-	}
-
-	if blog == nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"error": "Blog not found",
-		})
+		return err
 	}
 
 	return c.JSON(dto.BlogResponse{
