@@ -1,6 +1,9 @@
 package config
 
 import (
+	"encoding/json"
+	"os"
+
 	"github.com/spf13/viper"
 )
 
@@ -19,6 +22,17 @@ type DBConfig struct {
 }
 
 func NewConfig() (*Config, error) {
+	// First try to load from CONFIG_JSON environment variable
+	if configJSON := os.Getenv("CONFIG_JSON"); configJSON != "" {
+		var cfg Config
+		err := json.Unmarshal([]byte(configJSON), &cfg)
+		if err != nil {
+			return nil, err
+		}
+		return &cfg, nil
+	}
+
+	// Fallback to file-based config for local development
 	viper.SetConfigName("config")
 	viper.SetConfigType("json")
 	viper.AddConfigPath(".")
