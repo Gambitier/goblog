@@ -180,7 +180,7 @@ paths:
       summary: Get a single blog
       tags:
       - blogs
-    patch:
+    put:
       consumes:
       - application/json
       description: Update a blog post by its ID

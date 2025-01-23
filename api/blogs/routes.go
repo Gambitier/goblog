@@ -11,6 +11,6 @@ func RegisterRoutes(router fiber.Router, ctx *context.AppContext) {
 	blogs.Get("/", ctx.Handlers.BlogHandler.GetBlogs)
 	blogs.Post("/", ctx.Handlers.BlogHandler.CreateBlog)
 	blogs.Get("/:id", ctx.Handlers.BlogHandler.GetBlog)
-	blogs.Patch("/:id", ctx.Handlers.BlogHandler.UpdateBlog)
+	blogs.Put("/:id", ctx.Handlers.BlogHandler.UpdateBlog)
 	blogs.Delete("/:id", ctx.Handlers.BlogHandler.DeleteBlog)
 }

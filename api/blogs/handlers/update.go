@@ -21,7 +21,7 @@ import (
 // @Failure 400 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /api/blogs/{id} [patch]
+// @Router /api/blogs/{id} [put]
 func (h *BlogHandler) UpdateBlog(c *fiber.Ctx) error {
 	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
 	if err != nil {
