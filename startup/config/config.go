@@ -2,6 +2,7 @@ package config
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"strconv"
 
@@ -25,10 +26,19 @@ type DBConfig struct {
 func NewConfig() (*Config, error) {
 	// Try to load from environment variables first
 	if os.Getenv("DB_HOST") != "" {
-		dbPort, _ := strconv.Atoi(os.Getenv("DB_PORT"))
-		appPort, _ := strconv.Atoi(os.Getenv("PORT"))
+		// Debug: Print environment variables
+		fmt.Printf("DB_HOST: %s\n", os.Getenv("DB_HOST"))
+		fmt.Printf("DB_PORT: %s\n", os.Getenv("DB_PORT"))
+		fmt.Printf("DB_USER: %s\n", os.Getenv("DB_USER"))
+		fmt.Printf("DB_NAME: %s\n", os.Getenv("DB_NAME"))
+
+		dbPort, err := strconv.Atoi(os.Getenv("DB_PORT"))
+		if err != nil {
+			return nil, fmt.Errorf("invalid DB_PORT: %v", err)
+		}
+
 		configJSON := map[string]interface{}{
-			"port": appPort,
+			"port": 3000,
 			"database": map[string]interface{}{
 				"host":     os.Getenv("DB_HOST"),
 				"port":     dbPort,
@@ -39,7 +49,6 @@ func NewConfig() (*Config, error) {
 			},
 		}
 
-		// Convert to JSON and use existing unmarshal logic
 		jsonBytes, _ := json.Marshal(configJSON)
 		var cfg Config
 		if err := json.Unmarshal(jsonBytes, &cfg); err != nil {
