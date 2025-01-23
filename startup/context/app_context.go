@@ -1,6 +1,8 @@
 package context
 
 import (
+	"fmt"
+
 	"github.com/gambitier/goblog/api/handlers"
 	"github.com/gambitier/goblog/database"
 	"github.com/gambitier/goblog/services"
@@ -17,17 +19,17 @@ type AppContext struct {
 func NewAppContext() (*AppContext, error) {
 	cfg, err := config.NewConfig()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to load config: %v", err)
 	}
 
 	db, err := database.NewDatabase(&cfg.DB)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to initialize database: %v", err)
 	}
 
 	service, err := services.NewService(db)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to initialize service: %v", err)
 	}
 
 	handlers := handlers.NewHandlers(service)
